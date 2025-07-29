@@ -1,12 +1,36 @@
 import React from "react";
 
-function AdminNavBar({ onChangePage }) {
+function QuestionItem({ question, onDeleteClick, onUpdateQuestion }) {
+  const { id, prompt, answers, correctIndex } = question;
+
+  function handleDeleteClick() {
+    onDeleteClick(id);
+  }
+
+  function handleCorrectAnswerChange(event) {
+    const newCorrectIndex = parseInt(event.target.value);
+    onUpdateQuestion(id, newCorrectIndex);
+  }
+
+  const options = answers.map((answer, index) => (
+    <option key={index} value={index}>
+      {answer}
+    </option>
+  ));
+
   return (
-    <nav>
-      <button onClick={() => onChangePage("Form")}>New Question</button>
-      <button onClick={() => onChangePage("List")}>View Questions</button>
-    </nav>
+    <li>
+      <h4>Question {id}</h4>
+      <h5>Prompt: {prompt}</h5>
+      <label>
+        Correct Answer:
+        <select defaultValue={correctIndex} onChange={handleCorrectAnswerChange}>
+          {options}
+        </select>
+      </label>
+      <button onClick={handleDeleteClick}>Delete Question</button>
+    </li>
   );
 }
 
-export default AdminNavBar;
+export default QuestionItem;
